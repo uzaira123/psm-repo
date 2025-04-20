@@ -4,7 +4,7 @@ import streamlit as st
 # Page styling
 st.set_page_config(page_title="Password Strength by Uzaira Waheed", page_icon="🌖", layout="centered")
 
-# Custom CSS (Style settings)
+# Custom CSS for styling
 st.markdown("""
 <style>
 .main {text-align:center}
@@ -14,75 +14,61 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Page title aur description
+# Title and description
 st.title("🔐 Password Strength Checker")
-st.write("Neeche apna password likhein taake hum uski security check kar sakein. 🔍")
+st.write("Enter your password below to check how secure it is. 🔍")
 
-# Password check karne wali function
+# Function to check password strength
 def check_password_strength(password):
     score = 0
     feedback = []
 
-    # Length check
+    # Check for length
     if len(password) >= 8:
         score += 1
     else:
-        feedback.append("❌ Password kam az kam 8 characters ka hona chahiye.")
+        feedback.append("❌ Password should be at least 8 characters long.")
 
-    # Upper aur lowercase letters check
+    # Check for uppercase and lowercase letters
     if re.search(r"[A-Z]", password) and re.search(r"[a-z]", password):
         score += 1
     else:
-        feedback.append("❌ Password mein uppercase (A-Z) aur lowercase (a-z) letters hone chahiyein.")
+        feedback.append("❌ Include both uppercase (A-Z) and lowercase (a-z) letters.")
 
-    # Digit check
+    # Check for digits
     if re.search(r"\d", password):
         score += 1
     else:
-        feedback.append("❌ Password mein kam az kam ek number (0-9) hona chahiye.")
+        feedback.append("❌ Include at least one number (0-9).")
 
-    # Special character check
+    # Check for special characters
     if re.search(r"[!@#$%^&*]", password):
         score += 1
     else:
-        feedback.append("❌ Password mein kam az kam ek special character (!@#$%^&*) hona chahiye.")
+        feedback.append("❌ Include at least one special character (!@#$%^&*).")
 
     return score, feedback
 
-# Password input field
-password = st.text_input("Apna password likhein:", type="password", help="Mazboot password banaiye 🔐")
+# Input field
+password = st.text_input("Enter your password:", type="password", help="Make sure your password is strong 🔐")
 
-# Button click hone par action
+# Check button
 if st.button("Check Strength"):
     if password:
         score, feedback = check_password_strength(password)
 
-        # Result show karna
+        # Display results
         if score == 4:
-            st.success("✅ Bohat acha password hai — strong aur secure.")
+            st.success("✅ Strong Password - Your password is secure.")
         elif score == 3:
-            st.info("⚠️ Password theek hai — lekin behtar banaya ja sakta hai.")
+            st.info("⚠️ Moderate Password - Consider improving it.")
         else:
-            st.error("❌ Password kamzor hai — neeche diye gaye suggestions ko follow karein.")
+            st.error("❌ Weak Password - Follow the suggestions below to make it stronger.")
 
-        # Feedback display karna
+        # Show suggestions
         if feedback:
-            with st.expander("🔍 Password behtar banane ke liye tips"):
+            with st.expander("🔍 Suggestions to Improve Your Password"):
                 for item in feedback:
                     st.write(item)
     else:
-        st.warning("⚠️ Pehle password likhein phir check karein.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        st.warning("⚠️ Please enter a password first.")
